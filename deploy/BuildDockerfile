@@ -1,0 +1,13 @@
+FROM phusion/baseimage:0.10.1
+
+# Add PPA containing ghc and cabal
+RUN apt-add-repository -y ppa:hvr/ghc
+RUN apt-get update
+
+# Install required packages
+RUN apt-get install -y cabal-install-2.2 ghc-8.2.2 zlib1g-dev
+
+# Run cabal new-update, which weirdly requires a cabal.project file
+RUN touch cabal.project
+RUN /opt/cabal/bin/cabal new-update
+RUN rm cabal.project
