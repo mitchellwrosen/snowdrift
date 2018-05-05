@@ -1,2 +1,5 @@
 .ghc.environment.*
+.ghcid
+cabal.project.local
+dist/
 dist-newstyle/
