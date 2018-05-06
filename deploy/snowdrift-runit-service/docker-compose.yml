@@ -1,0 +1,7 @@
+version: '2'
+services:
+  snowdrift:
+    image: mitchellsalad/snowdrift
+    command: /sbin/my_init snowdrift
+    ports:
+      - "80:8000"

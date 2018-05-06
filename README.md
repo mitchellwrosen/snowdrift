@@ -76,15 +76,17 @@ Things I've done manually to provision the server. How is devops formed?
 
 * `ssh-copy-id` my laptop's SSH key onto it
 
-* Install docker and docker-compose
+* Install docker, docker-compose, runit
 
-* Write a little docker-compose.yml for running `snowdrift`:
+* Create log dirs for runit services:
 
-      version: '2'
-      snowdrift:
-        image: mitchellsalad/snowdrift
-        command: /sbin/my_init snowdrift
-        ports:
-          - "80:8000"
+      mkdir /var/log/snowdrift
+      mkdir /var/log/snowdrift-control
 
-* Still todo: run `snowdrift-control` as a system service
+* Deploy `snowdrift-control` binary and service files:
+
+      ./scripts/deploy-snowdrift-control.sh
+
+* Copy the `snowdrift` service files:
+
+      rsync -r deploy/snowdrift-runit-service/* root@45.33.68.74:/etc/service/snowdrift

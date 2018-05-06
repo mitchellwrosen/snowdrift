@@ -2,16 +2,13 @@
 
 set -ex
 
-# Copy snowdrift and snowdrift-control executables out of an ephemeral container
-# into /dist
+# Copy snowdrift executable out of an ephemeral container into /dist
 docker run \
   --rm \
   --mount "type=volume,src=snowdrift-cabal-dist,dst=/tmp/snowdrift" \
   --mount "type=bind,src=$PWD/dist,dst=/dist" \
   ubuntu:16.04 \
-  sh -c \
-    "cp \$(find /tmp/snowdrift -name snowdrift -type f -executable) /dist && \
-     cp \$(find /tmp/snowdrift -name snowdrift-control -type f -executable) /dist"
+  sh -c "cp \$(find /tmp/snowdrift -name snowdrift -type f -executable) /dist"
 
 # Build dockerfile
 docker build . -f deploy/DeployDockerfile -t mitchellsalad/snowdrift
