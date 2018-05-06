@@ -15,7 +15,6 @@ import System.IO
 main :: IO ()
 main = do
   hSetBuffering stdout LineBuffering
-
   run 8000 $ \request respond -> do
     print request
     case request of

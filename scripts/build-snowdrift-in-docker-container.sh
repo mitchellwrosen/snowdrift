@@ -18,7 +18,6 @@ docker run \
   --mount "type=volume,src=snowdrift-cabal-store,dst=/root/.cabal" \
   --mount "type=volume,src=snowdrift-cabal-dist,dst=$BUILDDIR" \
   --mount "type=bind,src=$PWD,dst=/snowdrift" \
-  $IMAGE \
-  /sbin/my_init -- sh -c \
-     "cd snowdrift && \
+  $IMAGE sh -c \
+    "cd snowdrift && \
      SNOWDRIFT_VERSION=$VERSION HOME=/root $CABAL new-build -O -w $GHC --builddir $BUILDDIR all"
