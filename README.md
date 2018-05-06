@@ -67,3 +67,24 @@ The site is deployed at
 
     http://45.33.68.74
     http://[2600:3c03::f03c:91ff:fe51:9aeb]
+
+#### Uh oh
+
+Things I've done manually to provision the server. How is devops formed?
+
+* Make an SSH key
+
+* `ssh-copy-id` my laptop's SSH key onto it
+
+* Install docker and docker-compose
+
+* Write a little docker-compose.yml for running `snowdrift`:
+
+      version: '2'
+      snowdrift:
+        image: mitchellsalad/snowdrift
+        command: /sbin/my_init snowdrift
+        ports:
+          - "80:8000"
+
+* Still todo: run `snowdrift-control` as a system service
