@@ -33,7 +33,7 @@ example, to disable optimization for faster builds, use
 * (Optional) push the ghc-8.2.2 image to DockerHub, if built locally and the
   public version needs updating.
 
-      ./scripts/push-ghc-8.2.2-docker-image.sh
+      docker push mitchellsalad/ghc-8.2.2
 
 * Build the code inside the build container.
 
@@ -53,11 +53,11 @@ example, to disable optimization for faster builds, use
 * Build the Docker image to deploy, which contains the `snowdrift` executable at
   `/bin/snowdrift`.
 
-    ./scripts/build-snowdrift-docker-image.sh
+      ./scripts/build-snowdrift-docker-image.sh
 
 * Push the Docker image to DockerHub.
 
-    ./scripts/push-snowdrift-docker-image.sh
+      docker push mitchellsalad/snowdrift
 
 * More steps required... :)
 
