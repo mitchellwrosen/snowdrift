@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
 # The image to use to build the site
-IMAGE=mitchellsalad:ghc-8.2.2
+IMAGE=mitchellsalad/ghc-8.2.2
+
+# The version of the website, served at /version
+VERSION=$(git rev-parse HEAD)
 
 # Locations of cabal/ghc executables in the image
 CABAL=/opt/cabal/bin/cabal
@@ -17,5 +20,5 @@ docker run \
   /sbin/my_init -- sh -c \
     "tar xf dist/snowdrift-1.tar.gz -C . && \
      cd snowdrift-1 && \
-     HOME=/root $CABAL new-build -w $GHC &&
+     SNOWDRIFT_VERSION=$VERSION HOME=/root $CABAL new-build -w $GHC &&
      cp $TARGET /dist"

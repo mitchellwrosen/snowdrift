@@ -1,0 +1,3 @@
+FROM phusion/baseimage:0.10.1
+
+COPY dist/snowdrift /bin/snowdrift
