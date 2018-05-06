@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# The image to use to build the site
+# The image to use to build Snowdrift
 IMAGE=mitchellsalad/ghc-8.2.2
 
 # The version of the website, served at /version
@@ -10,15 +10,15 @@ VERSION=$(git rev-parse HEAD)
 CABAL=/opt/cabal/bin/cabal
 GHC=/opt/ghc/bin/ghc
 
-# Where cabal puts the snowdrift binary
-TARGET=/snowdrift-1/dist-newstyle/build/x86_64-linux/ghc-8.2.2/snowdrift-1/x/snowdrift/build/snowdrift/snowdrift
+# Where to put build artifacts
+BUILDDIR=/root/snowdrift-dist
 
 docker run \
   --rm \
-  --mount "type=bind,src=$PWD/dist,dst=/dist" \
+  --mount "type=volume,src=snowdrift-cabal-store,dst=/root/.cabal" \
+  --mount "type=volume,src=snowdrift-cabal-dist,dst=$BUILDDIR" \
+  --mount "type=bind,src=$PWD,dst=/snowdrift" \
   $IMAGE \
   /sbin/my_init -- sh -c \
-    "tar xf dist/snowdrift-1.tar.gz -C . && \
-     cd snowdrift-1 && \
-     SNOWDRIFT_VERSION=$VERSION HOME=/root $CABAL new-build -w $GHC &&
-     cp $TARGET /dist"
+     "cd snowdrift && \
+     SNOWDRIFT_VERSION=$VERSION HOME=/root $CABAL new-build -O -w $GHC --builddir $BUILDDIR all"

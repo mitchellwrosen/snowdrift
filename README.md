@@ -2,11 +2,11 @@
 
 #### Building the code
 
-    cabal new-build
+    cabal new-build snowdrift
 
 #### Running the website locally
 
-    cabal new-run
+    cabal new-run snowdrift
 
 This will run the website on http://localhost:8000.
 
@@ -35,17 +35,23 @@ example, to disable optimization for faster builds, use
 
       ./scripts/push-ghc-8.2.2-docker-image.sh
 
-* Tarball the code. This creates a tarball in `/dist` that the build image will
-  have access to via a Docker `--mount`.
+* Build the code inside the build container.
 
-    cabal sdist
+      ./scripts/build-snowdrift-in-docker-container.sh
 
-* Build the code inside the build container. This places a `snowdrift` binary
-  inside the `/dist` dir on the host.
+  To make subsequent manual builds faster, this will use two docker volumes for
+  the cabal build directory and cabal nix-style store. You can see these by
+  running:
 
-    ./scripts/build-snowdrift-in-docker-container.sh
+      docker volume ls
 
-* Build the Docker image to deploy, which contains the snowdrift executable.
+  It's safe to delete either them at any time by running:
+
+      docker volume rm snowdrift-cabal-dist
+      docker volume rm snowdrift-cabal-store
+
+* Build the Docker image to deploy, which contains the `snowdrift` executable at
+  `/bin/snowdrift`.
 
     ./scripts/build-snowdrift-docker-image.sh
 

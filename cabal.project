@@ -1,2 +1,4 @@
-packages: .
+packages:
+  snowdrift
+  snowdrift-control
 with-compiler: ghc-8.2.2
