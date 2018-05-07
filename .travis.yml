@@ -25,18 +25,20 @@ cache:
 
 before_install:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker pull mitchellsalad/ghc-8.2.2:latest
-  - docker pull phusion/baseimage:0.10.1
-  - mkdir -p dist
 
 install:
+  - docker pull mitchellsalad/ghc-8.2.2:latest
   - docker run --detach --tty --name snowdrift --env SNOWDRIFT_VERSION=$TRAVIS_COMMIT --mount "type=bind,src=$HOME/.cabal,dst=/root/.cabal" --mount "type=bind,src=$PWD,dst=/snowdrift" mitchellsalad/ghc-8.2.2
   - docker exec snowdrift sh -c "cd snowdrift && HOME=/root cabal new-update"
   - docker exec snowdrift sh -c "cd snowdrift && HOME=/root cabal new-build --disable-tests --disable-benchmarks --only-dependencies -j2 all"
 
 script:
   - docker exec snowdrift sh -c "cd snowdrift && HOME=/root cabal new-build --enable-tests --enable-benchmarks -j2 all"
+
+after_success:
+  - mkdir -p dist
   - docker exec snowdrift sh -c "cd snowdrift && cp \$(find dist-newstyle/ -name snowdrift -type f -executable) dist/"
   - docker exec snowdrift sh -c "cd snowdrift && cp \$(find dist-newstyle/ -name snowdrift-control -type f -executable) dist/"
-  - docker build . -f deploy/DeployDockerfile -t mitchellsalad/snowdrift
+  - docker pull phusion/baseimage:0.10.1
+  - docker build . -f devops/DeployDockerfile -t mitchellsalad/snowdrift
   - docker push mitchellsalad/snowdrift
