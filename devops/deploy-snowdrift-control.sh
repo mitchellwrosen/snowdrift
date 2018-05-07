@@ -2,13 +2,17 @@
 
 set -ex
 
-# Copy snowdrift executable out of an ephemeral container into /dist
 docker run \
   --rm \
-  --mount "type=volume,src=snowdrift-cabal-dist,dst=/tmp/snowdrift" \
+  --mount "type=volume,src=snowdrift-cabal-store,dst=/root/.cabal" \
   --mount "type=bind,src=$PWD/dist,dst=/dist" \
-  ubuntu:16.04 \
-  sh -c "cp \$(find /tmp/snowdrift -name snowdrift-control -type f -executable) /dist"
+  --mount "type=bind,src=$PWD/snowdrift-control,dst=/snowdrift" \
+  mitchellsalad/ghc-8.2.2 \
+  sh -c \
+    "cd /snowdrift && \
+     cabal new-update && \
+     cabal new-build && \
+     cp \$(find dist-newstyle -name snowdrift-control -type f -executable) /dist"
 
 # Copy it to the server
 rsync dist/snowdrift-control root@45.33.68.74:/bin/snowdrift-control
