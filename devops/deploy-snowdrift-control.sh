@@ -14,7 +14,7 @@ docker run \
 rsync dist/snowdrift-control root@45.33.68.74:/bin/snowdrift-control
 
 # Copy the service files
-rsync -r deploy/snowdrift-control-runit-service/* root@45.33.68.74:/etc/service/snowdrift-control
+rsync -r devops/snowdrift-control-runit-service/* root@45.33.68.74:/etc/service/snowdrift-control
 
 # Restart the service
 ssh root@45.33.68.74 sv restart snowdrift-control

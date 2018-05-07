@@ -42,8 +42,8 @@ Things I've done manually to provision the server. How is devops formed?
 
 * Deploy `snowdrift-control` binary and service files:
 
-      ./scripts/deploy-snowdrift-control.sh
+      ./devops/deploy-snowdrift-control.sh
 
 * Copy the `snowdrift` service files:
 
-      rsync -r deploy/snowdrift-runit-service/* root@45.33.68.74:/etc/service/snowdrift
+      rsync -r devops/snowdrift-runit-service/* root@45.33.68.74:/etc/service/snowdrift
